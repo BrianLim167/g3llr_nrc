@@ -2,34 +2,6 @@ import requests
 import random
 import time
 
-##command_family = "login"
-##user = "bl2667"
-##secret = "awogo"
-##
-##test = "http://10.42.0.1:5000/login/bl2667/awogo/"
-##r = requests.post(test)
-##print(r.text)
-##print("done")
-##
-##r = requests.post("http://10.42.0.1:5000/{}/{}/{}/"\
-##                  .format(command_family,user,secret))
-##print(r.text,"@@@@@@@@@@")
-##
-##r = requests.post("http://10.42.0.1:5000/{}/{}/{}/{}/{}"\
-##                  .format("game","bl2667",secret,"tick",""))
-##print(r.text)
-
-##test = "http://10.42.0.1:5000/game/bl2667/awogo/tick"
-##t = requests.post(test)
-##print(t.text)
-##print("done")
-##
-##
-##test = "http://10.42.0.1:5000/game/bl2667/awogo/reset"
-##t = requests.post(test)
-##print(t.text)
-##print("done")
-
 
 class LoginError(Exception):
     pass
@@ -103,16 +75,52 @@ class NRC(object):
         return self.get("game", "get_status")
 
 # TESTING
+
+def show_pos(status):
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(status["player_position"])
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+
+def abort(s):
+    r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
+    print(r.text)
+
+
 usr = input("Please type your NYU net ID: ")
-a = NRC(usr)
+a = NRC(usr, 1)
 s = a.secret
 a.login()
-a.tick()
-a.start_holding()
-a.tick()
-a.stop_holding()
-a.tick()
-a.select_direction(1)
-a.tick()
-a.get_status()
+try:
+    holds = 0
+    turns = 0
+    while(holds < 3):
+        moves = 0
+        while(moves < 8):
+            status = a.get_status().json()
+            show_pos(status)
+            if(status["number_of_options"]>1):
+                dir_confirm = a.select_direction(turns)
+                print(dir_confirm.text)
+                turns+=1
+            a.tick()
+            moves+=1
+        a.start_holding()
+        ticks=0
+        while(ticks<4):
+            a.tick()
+            status = a.get_status().json()
+            show_pos(status)
+            ticks+=1
+        a.stop_holding()
+        holds+=1
+    while(turns< 3):
+        status = a.get_status().json()
+        show_pos(status)
+        if(status["number_of_options"]>1):
+            a.select_direction(turns)
+            turns+=1
+        a.tick()
+except:
+    a.reset()
 a.reset()
+
