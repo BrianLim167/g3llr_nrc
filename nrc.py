@@ -51,6 +51,7 @@ class NRC(object):
         for i in range(n):
             secret += chr(random.choice(char_lst))
 
+        print("your secret is: {}".format(secret))
         return secret
 
     # send a POST request
@@ -58,7 +59,7 @@ class NRC(object):
         url = '/'.join([NRC.url_base, family, self.user, self.secret, *args])
         r = requests.post(url)
         print(r.text)
-        print("done")
+##        print("done")
         return r
 
     # send a GET request
@@ -66,7 +67,7 @@ class NRC(object):
         url = '/'.join([NRC.url_base, family, self.user, self.secret, *args])
         r = requests.get(url)
         print(r.text)
-        print("done")
+##        print("done")
         return r
 
     def login(self):
@@ -82,7 +83,7 @@ class NRC(object):
         return self.post("game", "stop_holding")
 
     def select_direction(self, index):
-        return self.post("game", "select_direction", index)
+        return self.post("game", "select_direction", str(index))
 
     def reset(self):
         return self.post("game", "reset")
@@ -90,6 +91,7 @@ class NRC(object):
     def get_status(self):
         return self.get("game", "get_status")
 
+# TESTING
 a = NRC("bl2667")
 a.reset()
 a.login()
