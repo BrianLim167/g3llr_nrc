@@ -42,7 +42,7 @@ class NRC(object):
 
     # create a secret string of size n of random letters and numbers
     @staticmethod
-    def gen_secret(n=8):
+    def gen_secret(n=16):
         secret = ""
         
         # list of ascii codes of allowed characters
@@ -51,12 +51,13 @@ class NRC(object):
         for i in range(n):
             secret += chr(random.choice(char_lst))
 
-        print("your secret is: {}".format(secret))
+        print("Your secret is: {}".format(secret))
         return secret
 
     # send a POST request
     def post(self, family, *args):
         url = '/'.join([NRC.url_base, family, self.user, self.secret, *args])
+        print(url)
         r = requests.post(url)
         print(r.text)
 ##        print("done")
@@ -65,6 +66,7 @@ class NRC(object):
     # send a GET request
     def get(self, family, *args):
         url = '/'.join([NRC.url_base, family, self.user, self.secret, *args])
+        print(url)
         r = requests.get(url)
         print(r.text)
 ##        print("done")
@@ -92,7 +94,8 @@ class NRC(object):
         return self.get("game", "get_status")
 
 # TESTING
-a = NRC("bl2667")
+usr = input("Please type your NYU net ID: ")
+a = NRC(usr)
 a.reset()
 a.login()
 a.tick()
