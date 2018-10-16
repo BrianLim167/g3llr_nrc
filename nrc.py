@@ -75,6 +75,12 @@ class NRC(object):
     def get_status(self):
         return self.get("game", "get_status")
 
+    def attempt_heal(self):
+        return self.post("game", "attempt_heal")
+
+    def heal_solution(self, solution):
+        return self.post("game", "heal_solution", solution)
+
 # TESTING
 
 def show_pos(status):
