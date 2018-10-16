@@ -11,7 +11,8 @@ class NRC(object):
     
     def __init__(self, user, delay=0, secret=None):
         if secret == None:
-            secret = NRC.gen_secret()
+            secret = "secret"
+##            secret = NRC.gen_secret()
 
         self.user = user
         self.secret = secret
@@ -53,8 +54,8 @@ class NRC(object):
 ##        print("done")
         return r
 
-    def login(self):
-        return self.post("login")
+    def login(self, benchmark):
+        return self.post("login", benchmark)
 
     def tick(self):
         return self.post("game", "tick")
@@ -81,46 +82,6 @@ def show_pos(status):
     print(status["player_position"])
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
-def abort(s):
+def abort(s="bl2667/secret"):
     r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
     print(r.text)
-
-
-usr = input("Please type your NYU net ID: ")
-a = NRC(usr, 1)
-s = a.secret
-a.login()
-try:
-    holds = 0
-    turns = 0
-    while(holds < 3):
-        moves = 0
-        while(moves < 8):
-            status = a.get_status().json()
-            show_pos(status)
-            if(status["number_of_options"]>1):
-                dir_confirm = a.select_direction(turns)
-                print(dir_confirm.text)
-                turns+=1
-            a.tick()
-            moves+=1
-        a.start_holding()
-        ticks=0
-        while(ticks<4):
-            a.tick()
-            status = a.get_status().json()
-            show_pos(status)
-            ticks+=1
-        a.stop_holding()
-        holds+=1
-    while(turns< 3):
-        status = a.get_status().json()
-        show_pos(status)
-        if(status["number_of_options"]>1):
-            a.select_direction(turns)
-            turns+=1
-        a.tick()
-except:
-    a.reset()
-a.reset()
-
