@@ -81,6 +81,23 @@ class NRC(object):
     def heal_solution(self, solution):
         return self.post("game", "heal_solution", solution)
 
+    # solves arithmetic Challenge from attempt_heal
+    # gives numerical solution to be used by heal_solution
+    @staticmethod
+    def disease_solver(challenge):
+        problem = challenge[0]
+        args = challenge[1:]
+        if "product" in problem:
+            ans = 1
+            for arg in args:
+                ans *= arg
+            return ans
+        if "sum" in problem:
+            ans = 0
+            for arg in args:
+                ans += arg
+            return ans
+
 # TESTING
 
 def show_pos(status):

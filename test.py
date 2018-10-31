@@ -19,20 +19,25 @@ from nrc import *
 abort()
 
 usr = input("Please type your NYU net ID: ")
-a = NRC(usr)
+test = NRC(usr)
 try:
-    s = a.secret
-    a.login("a")
+    s = test.secret
+    test.login("a")
     print("Press ^C at any time to stop")
     found = False
     while not found:
-        status = a.get_status().json()
-        a.attempt_heal()
-        a.heal_solution("yes")
-        a.tick()
+        status = test.get_status().json()
+        heal_info = test.attempt_heal().json()
+        if not "Error" in heal_info:
+            solution = NRC.disease_solver(heal_info["Challenge"])
+            test.heal_solution(str(solution))
+        test.tick()
         if status["number_of_options"] > 1:
-            a.select_direction(input("Choose direction {}:".format(status["options"])))
-except:
-    a.reset()
-a.reset()
+            test.select_direction(input("Choose direction {}:".format(status["options"])))
+except Exception as e:
+    print("########~~ERROR~~########")
+    print(e)
+    print("########~~ERROR~~########")
+    test.reset()
+test.reset()
 
