@@ -41,6 +41,6 @@ except Exception as e:
     print("########~~ERROR~~########")
     print(e)
     print("########~~ERROR~~########")
-    test.reset()
-test.reset()
+    a.reset()
+a.reset()
 

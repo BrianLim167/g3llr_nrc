@@ -38,7 +38,7 @@ class NRC(object):
         url = '/'.join([NRC.url_base, family, self.user, self.secret, *args])
         print(url)
         r = requests.post(url)
-        print(r.text)
+##        print(r.text)
         if r.text == "Please wait for the current group to finish before attempting to login.":
             raise LoginError
 ##        print("done")
@@ -50,7 +50,7 @@ class NRC(object):
         url = '/'.join([NRC.url_base, family, self.user, self.secret, *args])
         print(url)
         r = requests.get(url)
-        print(r.text)
+##        print(r.text)
 ##        print("done")
         return r
 
@@ -98,6 +98,13 @@ class NRC(object):
                 ans += arg
             return ans
 
+    # given a destination, returns a dictionary
+    # mapping each node to the distance from the destination
+    @staticmethod
+    def pathfinding(destination):
+        nrc_map = NRC.nrc_map
+        
+
 # TESTING
 
 def show_pos(status):
@@ -105,6 +112,11 @@ def show_pos(status):
     print(status["player_position"])
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
-def abort(s="bl2667/secret"):
-    r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
+def abort():
+    users = ["bl2667/secret",
+             "ldr325/secret",
+             "hml377/secret"]
+    for user in users:
+        s=user
+        r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
     print(r.text)
