@@ -37,7 +37,10 @@ try:
             a.select_direction(turns)
             turns+=1
         a.tick()
-except:
-    a.reset()
-a.reset()
+except Exception as e:
+    print("########~~ERROR~~########")
+    print(e)
+    print("########~~ERROR~~########")
+    test.reset()
+test.reset()
 
