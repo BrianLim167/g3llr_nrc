@@ -28,7 +28,13 @@ while len(path) > 0:
             direction = i
         i += 1
     if deadend:
-        path.pop()
+        is_frontier = False
+        while not is_frontier and len(path) > 0:
+            for neighbor in nrc_map[path[-1]]:
+                if neighbor not in explored:
+                    is_frontier = True
+            if not is_frontier:
+                path.pop()
         a.reset()
         a = NRC(usr)
         a.login('a')
@@ -50,5 +56,12 @@ while len(path) > 0:
 ##    a.reset()
 a.reset()
 
+for node in nrc_map:
+    for neighbor in nrc_map[node]:
+        nrc_map[neighbor].append(node)
+for node in nrc_map:
+    nrc_map[node] = set(nrc_map[node])
+
 fopen = open("map.json", 'w')
 fopen.write(str(nrc_map))
+fopen.close()

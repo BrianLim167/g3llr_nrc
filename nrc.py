@@ -1,13 +1,16 @@
 import requests
 import random
 import time
-
+import json
 
 class LoginError(Exception):
     pass
 
 class NRC(object):
     url_base = "http://10.42.0.1:5000" # start of every URL
+    fopen = open("nrc_map.json",'r')
+    nrc_map = json.loads(fopen.read())
+    fopen.close()
     
     def __init__(self, user, delay=0, secret=None):
         if secret == None:
@@ -102,7 +105,13 @@ class NRC(object):
     # mapping each node to the distance from the destination
     @staticmethod
     def pathfinding(destination):
-        nrc_map = NRC.nrc_map
+        pathfind = {}
+        checked = []
+        frontier = [destination]
+        distance = 0
+        while len(frontier) > 0:
+            pass
+        
         
 
 # TESTING
