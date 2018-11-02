@@ -2,14 +2,6 @@ from nrc import *
 import time
 import json
 
-
-##def abort():
-##    users = ["abc/abc"]
-##    for user in users:
-##        s=user
-##        r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
-##    print(r.text)
-
 abort()
 
 usr = input("Please type your NYU net ID: ")
@@ -58,16 +50,19 @@ while len(path) > 0:
             print(a.get_status().json()["player_position"])
             print(path)
             print(explored)
+            print(nrc_map)
             print("############backtrack")
             a.tick()
     else:
         a.select_direction(direction)
         a.tick()
+        nrc_map[here] = a.get_status().json()["options"]
         path.append(a.get_status().json()["player_position"])
     explored.append(a.get_status().json()["player_position"])
     print(a.get_status().json()["player_position"])
     print(path)
     print(explored)
+    print(nrc_map)
     print("############")
 ##except Exception as e:
 ##    print("########~~ERROR~~########")

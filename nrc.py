@@ -114,9 +114,10 @@ class NRC(object):
             for node in frontier:
                 pathfind[node] = distance
                 checked.add(node)
-                for neighbor in NRC.nrc_map[node]:
-                    if neighbor not in checked:
-                        new_frontier.add(neighbor)
+                if node in NRC.nrc_map:
+                    for neighbor in NRC.nrc_map[node]:
+                        if neighbor not in checked:
+                            new_frontier.add(neighbor)
             frontier = new_frontier
             distance += 1
         return pathfind

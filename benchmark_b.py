@@ -11,7 +11,7 @@ if True:
     a.login("b")
     cured_diseases = 0
     found_brain = False
-    pathfind = NRC.pathfinding("Brain_0")
+    pathfind = NRC.pathfinding("BrainR_0")
     while not found_brain:
         status = a.get_status().json()
         heal = a.heal()
@@ -20,7 +20,7 @@ if True:
         direction = 0
         minimum = float("inf")
         for i in range(len(status["options"])):
-            if pathfind[status["options"][i]] < minimum:
+            if status["options"][i] in pathfind and pathfind[status["options"][i]] < minimum:
                 minimum = pathfind[status["options"][i]]
                 direction = i
         a.select_direction(direction)
@@ -35,7 +35,7 @@ if True:
         direction = 0
         minimum = float("inf")
         for i in range(len(status["options"])):
-            if pathfind[status["options"][i]] < minimum:
+            if status["options"][i] in pathfind and pathfind[status["options"][i]] < minimum:
                 minimum = pathfind[status["options"][i]]
                 direction = i
         a.select_direction(direction)
@@ -50,7 +50,7 @@ if True:
         direction = 0
         minimum = float("inf")
         for i in range(len(status["options"])):
-            if pathfind[status["options"][i]] < minimum:
+            if status["options"][i] in pathfind and pathfind[status["options"][i]] < minimum:
                 minimum = pathfind[status["options"][i]]
                 direction = i
         a.select_direction(direction)
