@@ -22,16 +22,12 @@ nrc_map = {}
 path = []
 explored = []
 path.append(a.get_status().json()["player_position"])
+explored.append(a.get_status().json()["player_position"])
 while len(path) > 0:
     neighbors = a.get_status().json()["options"]
     here = a.get_status().json()["player_position"]
     nrc_map[here] = neighbors
-    print(here)
-    print(path)
-    print(explored)
-    print("############")
     deadend = True
-    explored.append(a.get_status().json()["player_position"])
     i = 0
     while i < len(neighbors) and deadend:
         if neighbors[i] not in explored:
@@ -46,20 +42,33 @@ while len(path) > 0:
                     is_frontier = True
             if not is_frontier:
                 path.pop()
+
+        print(a.reset().text)
         a.reset()
-        a = NRC(usr)
-        a.login('a')
-        for j in range(len(path)):
+##        input()
+##        a = NRC(usr)
+        print(a.login('a'))
+        print(a.get_status().json())
+        for j in range(1,len(path)):
             options = a.get_status().json()["options"]
-            node = path[j]
+            next_node = path[j]
             for k in range(len(options)):
-                if node == options[k]:
+                if next_node == options[k]:
                     a.select_direction(k)
+            print(a.get_status().json()["player_position"])
+            print(path)
+            print(explored)
+            print("############backtrack")
             a.tick()
     else:
-        path.append(a.get_status().json()["player_position"])
         a.select_direction(direction)
         a.tick()
+        path.append(a.get_status().json()["player_position"])
+    explored.append(a.get_status().json()["player_position"])
+    print(a.get_status().json()["player_position"])
+    print(path)
+    print(explored)
+    print("############")
 ##except Exception as e:
 ##    print("########~~ERROR~~########")
 ##    print(e)
@@ -72,6 +81,7 @@ for node in nrc_map:
         nrc_map[neighbor].append(node)
 for node in nrc_map:
     nrc_map[node] = set(nrc_map[node])
+    nrc_map[node] = list(nrc_map[node])
 
 fopen = open("map.json", 'w')
 fopen.write(json.dumps(nrc_map))
