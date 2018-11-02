@@ -27,7 +27,9 @@ while len(path) > 0:
     here = a.get_status().json()["player_position"]
     nrc_map[here] = neighbors
     print(here)
+    print(path)
     print(explored)
+    print("############")
     deadend = True
     explored.append(a.get_status().json()["player_position"])
     i = 0
