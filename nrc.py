@@ -9,7 +9,7 @@ class LoginError(Exception):
 class NRC(object):
     url_base = "http://10.42.0.1:5000" # start of every URL
     fopen = open("nrc_map.json",'r')
-    nrc_map = json.loads(fopen.read())
+    nrc_map = json.loads(fopen.read().strip())
     fopen.close()
     
     def __init__(self, user, delay=0, secret=None):
@@ -120,6 +120,17 @@ class NRC(object):
             frontier = new_frontier
             distance += 1
         return pathfind
+
+    # use attempt_heal and heal_solution to cure disease if present
+    def heal(self):
+        status = self.get_status().json()
+        heal_attempt = self.attempt_heal()
+        heal_info = heal_attempt.json()
+        if not "Error" in heal_info:
+            solution = NRC.disease_solver(heal_info["Challenge"])
+            return self.heal_solution(str(solution))
+        return heal_attempt
+        
         
         
 

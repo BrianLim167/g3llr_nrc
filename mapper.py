@@ -1,5 +1,14 @@
 from nrc import *
 import time
+import json
+
+
+def abort():
+    users = ["abc/abc"]
+    for user in users:
+        s=user
+        r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
+    print(r.text)
 
 abort()
 
@@ -63,5 +72,5 @@ for node in nrc_map:
     nrc_map[node] = set(nrc_map[node])
 
 fopen = open("map.json", 'w')
-fopen.write(str(nrc_map))
+fopen.write(json.dumps(nrc_map))
 fopen.close()
