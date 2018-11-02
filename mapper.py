@@ -3,12 +3,12 @@ import time
 import json
 
 
-def abort():
-    users = ["abc/abc"]
-    for user in users:
-        s=user
-        r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
-    print(r.text)
+##def abort():
+##    users = ["abc/abc"]
+##    for user in users:
+##        s=user
+##        r = requests.post(NRC.url_base+"/game/{}/reset".format(s))
+##    print(r.text)
 
 abort()
 
