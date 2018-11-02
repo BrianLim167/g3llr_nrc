@@ -106,11 +106,20 @@ class NRC(object):
     @staticmethod
     def pathfinding(destination):
         pathfind = {}
-        checked = []
-        frontier = [destination]
+        checked = set()
+        frontier = {destination,}
         distance = 0
         while len(frontier) > 0:
-            pass
+            new_frontier = set()
+            for node in frontier:
+                pathfind[node] = distance
+                checked.add(node)
+                for neighbor in NRC.nrc_map[node]:
+                    if neighbor not in checked:
+                        new_frontier.add(neighbor)
+            frontier = new_frontier
+            distance += 1
+        return pathfind
         
         
 
