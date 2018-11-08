@@ -8,8 +8,11 @@ class LoginError(Exception):
 
 class NRC(object):
     url_base = "http://10.42.0.1:5000" # start of every URL
-    fopen = open("nrc_map.json",'r')
+    fopen = open("map.json",'r')
     nrc_map = json.loads(fopen.read().strip())
+    fopen.close()
+    fopen = open("reverse_map.json",'r')
+    nrc_reverse_map = json.loads(fopen.read().strip())
     fopen.close()
     
     def __init__(self, user, delay=0, secret=None):
@@ -51,7 +54,7 @@ class NRC(object):
     def get(self, family, *args):
         time.sleep(self.delay)
         url = '/'.join([NRC.url_base, family, self.user, self.secret, *args])
-        print(url)
+##        print(url)
         r = requests.get(url)
 ##        print(r.text)
 ##        print("done")
@@ -100,6 +103,12 @@ class NRC(object):
             for arg in args:
                 ans += arg
             return ans
+        if "difference" in problem:
+            return args[0] - args[1]
+        if "division" in problem:
+            return args[0] / args[1]
+        if "remainder" in problem:
+            return args[0] % args[1]
 
     # given a destination, returns a dictionary
     # mapping each node to the distance from the destination
@@ -114,8 +123,8 @@ class NRC(object):
             for node in frontier:
                 pathfind[node] = distance
                 checked.add(node)
-                if node in NRC.nrc_map:
-                    for neighbor in NRC.nrc_map[node]:
+                if node in NRC.nrc_reverse_map:
+                    for neighbor in NRC.nrc_reverse_map[node]:
                         if neighbor not in checked:
                             new_frontier.add(neighbor)
             frontier = new_frontier
@@ -129,6 +138,8 @@ class NRC(object):
         heal_info = heal_attempt.json()
         if not "Error" in heal_info:
             solution = NRC.disease_solver(heal_info["Challenge"])
+            print(heal_info["Challenge"])
+            print(solution)
             return self.heal_solution(str(solution))
         return heal_attempt
         
