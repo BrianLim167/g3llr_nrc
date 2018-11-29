@@ -9,6 +9,9 @@ abort()
 
 ##try:
 def benchmark():
+    kill_disease()
+
+def kill_disease():
 ##    usr = input("Please type your NYU net ID: ")
     usr = "bl2667"
     a = NRC(usr)
