@@ -1,5 +1,5 @@
-run: nrc.py
-	python3 nrc.py
+run: benchmark_c.py
+	python3 benchmark_c.py
 
 clean:
 	rm *.pyc

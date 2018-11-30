@@ -27,12 +27,12 @@ def benchmark():
         while not found:
             if "Victory" in a.get_status().text:
                 print(a.get_status().text)
+                time.sleep(5)
                 return
             status = a.get_status().json()
             print(status)
             if organ == status["player_position"]:
                 found = True
-##            print('\n'*80)
             print("--------------------------------------------------------------------")
             print("Current location: "+status["player_position"])
             print("Virus location: "+status["bot_location"])
@@ -47,12 +47,12 @@ def benchmark():
             else:
                 if heal.json()["Error"] != "Not in correct location to cure disease":
                     input()
-            print("n  || option")
-            print("===||======")
+            print("distance  || option")
+            print("==========||=======")
             direction = 0
             minimum = float("inf")
             for i in range(len(status["options"])):
-                print((str(pathfind[status["options"][i]])+"  ")[:3]+"|| "+status["options"][i])
+                print((str(pathfind[status["options"][i]])+"         ")[:10]+"|| "+status["options"][i])
                 if pathfind[status["options"][i]] < minimum:
                     minimum = pathfind[status["options"][i]]
                     direction = i
@@ -62,8 +62,8 @@ def benchmark():
         status = a.get_status().json()
         if "Victory" in a.get_status().text:
             print(a.get_status().text)
+            time.sleep(5)
             return
-##        print('\n'*80)
         print("--------------------------------------------------------------------")
         print("Current location: "+status["player_position"])
         print("Virus location: "+status["bot_location"])
@@ -89,7 +89,6 @@ def benchmark():
             print(a.get_status().text)
             time.sleep(5)
             return
-##        print('\n'*80)
         print("--------------------------------------------------------------------")
         print("Current location: "+status["player_position"])
         print("Virus location: "+status["bot_location"])
@@ -101,20 +100,8 @@ def benchmark():
         print("Finding virus")
         if status["number_of_options"] > 1:
             a.start_holding()
-##            action = input("Choose action {},{},{},{}:".format(status["options"],"stop","go","abort"))
-##            if action == "stop":
-##                a.start_holding()
-##            elif action == "go":
-##                a.stop_holding()
-##            elif action == "abort":
-##                abort()
-##                return
-##            else:
-##                a.select_direction(action)
         elif status["holding"]:
             a.stop_holding()
-##        if status["number_of_options"] > 1:
-##            a.select_direction(random.randint(0, status["number_of_options"]-1))
         a.tick()
 
 for i in range(2):
